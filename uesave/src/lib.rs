@@ -3044,23 +3044,23 @@ impl<W: Write, V> Writable<W, V> for Header {
 #[derive(Debug, PartialEq, Serialize, Deserialize)]
 pub struct Root {
     pub save_game_type: String,
-	pub flag: u32,
+    pub flag: u32,
     pub properties: Properties,
 }
 impl Root {
     fn read<R: Read + Seek, V: VersionInfo>(reader: &mut Context<R, V>) -> TResult<Self> {
         let save_game_type = read_string(reader)?;
-		
-		let flag = reader.read_u32::<LE>()?;
-		let _size = reader.read_u32::<LE>()?;
-		
+	
+	let flag = reader.read_u32::<LE>()?;
+	let _size = reader.read_u32::<LE>()?;
+	
         if reader.version().property_tag() {
             reader.read_u8()?;
         }
         let properties = read_properties_until_none(reader)?;
         Ok(Self {
             save_game_type,
-			flag,
+	    flag,
             properties,
         })
     }
